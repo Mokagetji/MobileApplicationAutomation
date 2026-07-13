@@ -1,21 +1,20 @@
+package Basics;
+
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.options.UiAutomator2Options;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.remote.DesiredCapabilities;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
 
 import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URL;
 
 public class StartNdosiMobileApp {
 
     public static AndroidDriver driver;
 
-    @Before
+    @BeforeTest
     public void setup() throws MalformedURLException {
 
         UiAutomator2Options options = new UiAutomator2Options()
@@ -32,14 +31,12 @@ public class StartNdosiMobileApp {
         driver.findElement(By.xpath("//android.widget.Button")).click();
 
     }
-    @After
-    public void quitApp(){
-        if (driver != null){
+
+    @AfterTest
+    public void quitApp() {
+        if (driver != null) {
             driver.quit();
         }
     }
-
-
-
 
 }
