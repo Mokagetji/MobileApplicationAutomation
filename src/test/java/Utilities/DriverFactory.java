@@ -12,6 +12,7 @@ public class DriverFactory {
 
     static AppiumDriver driver;
 
+    //initializing the driver
     public static void initDriver(Properties config) throws MalformedURLException {
         if (driver !=null) return;
         String platformName = config.getProperty("platformName").trim();
@@ -25,12 +26,10 @@ public class DriverFactory {
             initIOSDriver(config,executionType,appiumUrl);
         }
         else {
-            throw new RuntimeException("Unsupported platform: " + executionType);
+            throw new RuntimeException("Unsupported platformName: " + platformName);
         }
 
-
     }
-
     //initializing the Android driver
     private static void initAndroidDriver(Properties config, String executionType, String appiumUrl) throws MalformedURLException {
 
@@ -69,17 +68,17 @@ public class DriverFactory {
 
             if (executionType.equalsIgnoreCase("mobileWeb")) {
                 options.withBrowserName(config.getProperty("browserName"));
-                System.out.println("Launching the IOS edge browser");
+                System.out.println("Launching the edge browser");
             }
 
             else if (executionType.equalsIgnoreCase("nativeApp")) {
                 String appPath = System.getProperty("user.dir") + "/" + config.getProperty("appPath");
                 options.setApp(appPath);
-                System.out.println("Launching IOS native app");
+                System.out.println("Launching iOS native app");
             }
 
             else {
-                throw new RuntimeException("Unsupported executionType for IOS: " + executionType);
+                throw new RuntimeException("Unsupported executionType for iOS: " + executionType);
             }
 
             driver = new AppiumDriver(URI.create(appiumUrl).toURL(),options);
@@ -87,7 +86,20 @@ public class DriverFactory {
                 String webUrl = config.getProperty("webUrl");
                 driver.get(webUrl);
             }
+    }
 
+    //this method will be used by other classes to get the driver
+    public static AppiumDriver getDriver(){
+        return driver;
+    }
+
+    //this method quits or closes the driver after every desired test
+    public static void quitDriver(){
+        if (driver!=null){
+            driver.quit();
+            driver = null;
         }
+
+    }
 
 }
