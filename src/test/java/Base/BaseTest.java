@@ -4,6 +4,7 @@ import Pages.DashboardPage;
 import Pages.LoginPage;
 import Pages.AddReviewPage;
 import Utilities.DriverFactory;
+import Utilities.ScreenshotUtilities;
 import io.appium.java_client.AppiumDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
@@ -45,10 +46,15 @@ public class BaseTest {
 
     public void LoginToNdosiAutomation() throws InterruptedException {
         loginPage.clickBurgerMenuButton();
+        ScreenshotUtilities.captureScreenshot(driver,"Burger Menu Clicked");
+
         loginPage.clickSignInButton();
+        ScreenshotUtilities.captureScreenshot(driver,"Sign In Clicked");
+
         loginPage.enterEmail(config.getProperty("email"));
         loginPage.enterPassword(config.getProperty("password"));
         loginPage.clickLoginButton();
+        ScreenshotUtilities.captureScreenshot(driver,"Login Successful");
 
         Assert.assertTrue(loginPage.isLoginSuccessful(),"Login was unsuccessful");
     }

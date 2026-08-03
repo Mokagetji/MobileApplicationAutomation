@@ -10,18 +10,21 @@ public class TestListener implements ITestListener {
     @Override
     public void onTestFailure(ITestResult result)
     {
-        System.out.println("Test failed: "+result.getMethod().getMethodName());
+        takeScreenshot(result, "FAILED");
+        System.out.println("Test Failed: "+result.getMethod().getMethodName());
+
     }
 
     @Override
-    public void onTestSuccess(ITestResult result) {
-        takeScreenshot(result, "PASSED");
+    public void onTestSuccess(ITestResult result)
+    {
+        System.out.println("Test Passed: "+result.getMethod().getMethodName());
     }
 
     @Override
     public void onTestSkipped(ITestResult result)
     {
-        System.out.println("Test skipped: "+result.getMethod().getMethodName());
+        System.out.println("Test Skipped: "+result.getMethod().getMethodName());
     }
 
     private void takeScreenshot(ITestResult result,String status)
