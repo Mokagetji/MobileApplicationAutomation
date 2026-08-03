@@ -3,6 +3,7 @@ package Pages;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -43,8 +44,8 @@ public class LoginPage {
     private By loginButtonNativeLocator = By.xpath("//android.widget.Button[@content-desc='Login']");
     private By loginButtonWebLocator = By.name("loginSubmit");
 
-    //private By loginAssertionElementNativeLocator =;
-    //private By loginAssertionElementWebLocator = ;
+    private By loginAssertionElementNativeLocator = By.xpath("//android.view.View[@content-desc=\"Here's an overview of your learning journey\"]");
+    private By loginAssertionElementWebLocator = By.xpath("//div[contains(@class,'dashboard-welcome')]//p[contains(text(),'overview of your learning journey')]");
 
 
     private WebElement getElement(By nativeLocator, By webLocator)
@@ -58,6 +59,25 @@ public class LoginPage {
         else if (execType.equalsIgnoreCase("mobileWeb"))
         {
             return wait.until((ExpectedConditions.elementToBeClickable(webLocator)));
+        }
+        else
+        {
+            throw new RuntimeException("Unsupported executionType: "+execType);
+        }
+
+    }
+
+    private WebElement getVisibleElement(By nativeLocator, By webLocator)
+    {
+        String execType = config.getProperty("executionType");
+
+        if (execType.equalsIgnoreCase("nativeApp"))
+        {
+            return wait.until(ExpectedConditions.visibilityOfElementLocated(nativeLocator));
+        }
+        else if (execType.equalsIgnoreCase("mobileWeb"))
+        {
+            return wait.until((ExpectedConditions.visibilityOfElementLocated(webLocator)));
         }
         else
         {
@@ -89,13 +109,25 @@ public class LoginPage {
         WebElement passwordElement = getElement(passwordTextFieldNativeLocator,passwordTextFieldWebLocator);
         passwordElement.click();
         passwordElement.sendKeys(password);
+
     }
 
-    public void clickLoginButton() throws InterruptedException {
-        getElement(loginButtonNativeLocator,loginButtonWebLocator).click();
-        Thread.sleep(5000);
+    public void clickLoginButton()
+    {
+        WebElement loginButton = getElement(loginButtonNativeLocator, loginButtonWebLocator);
+
+        String execType = config.getProperty("executionType");
+
+        if (execType.equalsIgnoreCase("mobileWeb")) {
+            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", loginButton);
+        } else {
+            loginButton.click();
+        }
     }
 
-
+    public boolean isLoginSuccessful() throws InterruptedException
+    {
+        return getVisibleElement(loginAssertionElementNativeLocator,loginAssertionElementWebLocator).isDisplayed();
+    }
 
 }

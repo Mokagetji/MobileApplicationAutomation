@@ -2,15 +2,14 @@ package Base;
 
 import Pages.DashboardPage;
 import Pages.LoginPage;
+import Pages.AddReviewPage;
 import Utilities.DriverFactory;
 import io.appium.java_client.AppiumDriver;
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
-import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -21,6 +20,7 @@ public class BaseTest {
     protected Properties config;
     protected LoginPage loginPage;
     protected DashboardPage dashboardPage;
+    protected AddReviewPage addReviewPage;
 
     @BeforeClass
     public void setUpAndLogin() throws IOException, InterruptedException {
@@ -37,6 +37,10 @@ public class BaseTest {
         LoginToNdosiAutomation();
 
         dashboardPage = new DashboardPage(driver, config);
+
+        addReviewPage = new AddReviewPage(driver, config);
+
+
     }
 
     public void LoginToNdosiAutomation() throws InterruptedException {
@@ -45,6 +49,8 @@ public class BaseTest {
         loginPage.enterEmail(config.getProperty("email"));
         loginPage.enterPassword(config.getProperty("password"));
         loginPage.clickLoginButton();
+
+        Assert.assertTrue(loginPage.isLoginSuccessful(),"Login was unsuccessful");
     }
 
     @AfterClass

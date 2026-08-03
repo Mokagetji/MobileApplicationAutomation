@@ -39,14 +39,8 @@ public class DriverFactory {
 
         if (executionType.equalsIgnoreCase("mobileWeb")) {
             options.withBrowserName(config.getProperty("browserName"));
-            options.setCapability(
-                    "appium:chromedriverExecutable",
-                    "C:\\Users\\User\\AppData\\Roaming\\npm\\node_modules\\chromedriver\\lib\\chromedriver\\chromedriver.exe"
-            );
-            //options.setCapability("appium:chromedriverExecutable", config.getProperty("chromedriverPath"));
+            options.setCapability("appium:chromedriverExecutable", config.getProperty("chromedriverPath"));
 
-
-            //options.setCapability("appium:noReset", true);
 
             System.out.println("Launching the Android Chrome browser");
         }

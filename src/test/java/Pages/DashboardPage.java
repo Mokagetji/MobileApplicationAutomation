@@ -27,8 +27,9 @@ public class DashboardPage {
         PageFactory.initElements(new AppiumFieldDecorator(driver),this);
     }
 
-    //private By viewAllButtonNativeLocator = By.xpath("//android.widget.Button[@content-desc='View All →']");
-    //private By viewAllButtonWebLocator = By.xpath("//button[contains(normalize-space(),'View All')]");
+
+    private By viewAllButtonNativeLocator = By.xpath("//android.widget.Button[@content-desc='View All →']");
+    private By viewAllButtonWebLocator = By.xpath("//button[contains(normalize-space(),'View All')]");
 
 
     private WebElement getElement(By nativeLocator, By webLocator)
@@ -52,6 +53,6 @@ public class DashboardPage {
 
     public void clickViewAllButton()
     {
-        //getElement(viewAllButtonNativeLocator,viewAllButtonWebLocator).click();
+        getElement(viewAllButtonNativeLocator,viewAllButtonWebLocator).click();
     }
 }
